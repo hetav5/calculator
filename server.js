@@ -17,7 +17,7 @@ app.post('/calculate', (req, res) => {
   const { expression } = req.body;
 
   try {
-    const result = mathjs(expression); 
+    const result = eval(expression); 
     
     
     const operation = `${expression} = ${result}`;
