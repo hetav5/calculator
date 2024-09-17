@@ -11,7 +11,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: red;
+  background:black;
 }
 
 
@@ -54,4 +54,19 @@ body {
 }
 .operator {
   color: #201E50;
+}
+
+button[data-value="history"] {
+  background-color: #C4F1BE;
+  color: #201E50; 
+  font-size: 18px; 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  margin-top: 10px; 
+}
+#history{
+  color: azure;
+  font-size: 18px;
 }

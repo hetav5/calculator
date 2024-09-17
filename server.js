@@ -1,15 +1,20 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const app = express();
 
+const datafile = 'data.txt';
 
-let operationHistory = [];
-
+let ophistory = [];
+if(fs.existsSync(datafile)){
+  const historydata = fs.readFileSync(datafile, 'utf8');
+  if (historydata){
+    ophistory = historydata.split('\n').filter(line =>line.trim());
+  }
+}
 
 app.use(express.static(path.join(__dirname, 'public')));
-
-
 app.use(bodyParser.json());
 
 
@@ -18,16 +23,14 @@ app.post('/calculate', (req, res) => {
 
   try {
     const result = eval(expression); 
-    
-    
     const operation = `${expression} = ${result}`;
-    operationHistory.push(operation);
+    ophistory.push(operation);
     
     
-    if (operationHistory.length > 20) {
-      operationHistory.shift(); 
+    if (ophistory.length > 20) {
+      ophistory.shift(); 
     }
-
+    fs.writeFileSync(datafile, ophistory.join('\n'), 'utf8');
     res.json({ result });
   } catch (error) {
     res.status(400).json({ error: 'Invalid expression' });
@@ -36,7 +39,7 @@ app.post('/calculate', (req, res) => {
 
 
 app.get('/history', (req, res) => {
-  res.json({ history: operationHistory });
+  res.json({ history: ophistory });
 });
 
 

@@ -1,6 +1,10 @@
+// const { response } = require("express");
+
 document.addEventListener('DOMContentLoaded', () => {
   const display = document.querySelector('.display');
   const buttons = document.querySelectorAll('button');
+  const history = document.getElementById('history');
+  history.innerHTML = '';
 
   buttons.forEach(button => {
     button.addEventListener('click', async () => {
@@ -28,9 +32,25 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
           display.value = 'Error';
         }
+      } else if (value ==='history') {
+        try{
+          const response = await fetch ('/history',{
+            method:'GET',
+          });
+        
+        const data = await response.json();
+        if(response.ok){
+        history.innerHTML = data.history.join('<br>');
       } else {
-        display.value += value;
+        history.innerHTML = 'Error';
       }
-    });
+        
+      }catch(error){
+        history.innerHTML = 'Error';
+      }
+    }else{
+      display.value += value;
+    }
   });
+});
 });
